@@ -1,9 +1,11 @@
 @import 'variables';
 @import 'mixins';
+@import 'fonts';
 
 .app {
   min-height: 100vh;
   background-color: $background-color;
+  font-family: $primary-font;
 }
 
 .header {
