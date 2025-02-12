@@ -2,49 +2,28 @@
 @import 'mixins';
 @import 'fonts';
 
-.app {
-  min-height: 100vh;
-  background-color: $background-color;
+* {
+  @include reset;
   font-family: $primary-font;
 }
 
-.header {
-  background-color: $primary-color;
-  padding: 1rem;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.reports-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  @include mobile {
-    flex-direction: column;
-    gap: 1rem;
-  }
+.app {
+  min-height: 100vh;
+  background-color: $background-color;
 }
 
 .btn {
-  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
-  font-weight: 500;
   transition: background-color 0.2s;
+  box-shadow: 0px 4px 4px 0px #00000040;
+
+  padding-top: 12px;
+  padding-right: 40px;
+  padding-bottom: 12px;
+  padding-left: 40px;
+
 
   &:disabled {
     opacity: 0.7;
@@ -62,12 +41,22 @@
 
   &-secondary {
     background-color: $secondary-color;
-    color: white;
+    color: $text-secondary;
 
     &:hover:not(:disabled) {
       background-color: darken($secondary-color, 10%);
     }
   }
+
+  &-ghost {
+    background-color: transparent;
+    color: $primary-color;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(white, 0.1);
+    }
+  }
+
 }
 
 .modal-overlay {
@@ -121,28 +110,6 @@
   margin-top: 2rem;
 }
 
-.reports-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-
-  th,
-  td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid $border-color;
-  }
-
-  th {
-    background-color: $table-header-bg;
-    font-weight: 600;
-  }
-
-  @include mobile {
-    display: block;
-    overflow-x: auto;
-  }
-}
 
 .error-message {
   color: $error-color;
@@ -190,72 +157,5 @@
   .btn-block {
     width: 100%;
     margin-top: 1rem;
-  }
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @include mobile {
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-
-  @include mobile {
-    flex-direction: column;
-  }
-}
-
-.pagination-numbers {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.pagination-number {
-  min-width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &.pagination-dots {
-    border: none;
-    background: none;
-    cursor: default;
-    pointer-events: none;
-    opacity: 0.5;
-
-    &:hover {
-      background: none;
-    }
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-.pagination-btn {
-  @include mobile {
-    width: 100%;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 }

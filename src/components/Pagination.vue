@@ -12,39 +12,39 @@ const emit = defineEmits<{
 
 const pages = computed(() => {
   if (props.totalPages <= 1) return [];
-  
-  const delta = 2; 
+
+  const delta = 2;
   const range: (number | string)[] = [];
-  
+
   range.push(1);
-  
+
   let from = Math.max(2, props.currentPage - delta);
   let to = Math.min(props.totalPages - 1, props.currentPage + delta);
-  
+
   if (props.currentPage - delta <= 2) {
     to = Math.min(props.totalPages - 1, 5);
   }
-  
+
   if (props.currentPage + delta >= props.totalPages - 1) {
     from = Math.max(2, props.totalPages - 4);
   }
-  
+
   if (from > 2) {
     range.push('...');
   }
-  
+
   for (let i = from; i <= to; i++) {
     range.push(i);
   }
-  
+
   if (to < props.totalPages - 1) {
     range.push('...');
   }
-  
+
   if (props.totalPages > 1) {
     range.push(props.totalPages);
   }
-  
+
   return range;
 });
 
@@ -54,37 +54,100 @@ const isLastPage = computed(() => props.currentPage === props.totalPages);
 
 <template>
   <div v-if="totalPages > 1" class="pagination">
-    <button
-      class="btn btn-secondary pagination-btn"
-      :disabled="isFirstPage"
-      @click="emit('page-change', currentPage - 1)"
-    >
+    <button class="pagination-btn" :disabled="isFirstPage" @click="emit('page-change', currentPage - 1)">
       Anterior
     </button>
 
     <div class="pagination-numbers">
-      <button
-        v-for="page in pages"
-        :key="page"
-        class="btn pagination-number"
-        :class="{
-          'btn-primary': page === currentPage,
-          'btn-secondary': page !== currentPage && page !== '...',
-          'pagination-dots': page === '...'
-        }"
-        :disabled="page === '...'"
-        @click="page !== '...' && emit('page-change', Number(page))"
-      >
+      <button v-for="page in pages" :key="page" class="pagination-number" :class="{
+        'pagination-number--active': page === currentPage,
+        'pagination-number--inactive': page !== currentPage && page !== '...',
+        'pagination-dots': page === '...'
+      }" :disabled="page === '...'" @click="page !== '...' && emit('page-change', Number(page))">
         {{ page }}
       </button>
     </div>
 
-    <button
-      class="btn btn-secondary pagination-btn"
-      :disabled="isLastPage"
-      @click="emit('page-change', currentPage + 1)"
-    >
+    <button class="pagination-btn" :disabled="isLastPage" @click="emit('page-change', currentPage + 1)">
       Siguiente
     </button>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import '../assets/styles/main.scss';
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination-number {
+  @extend .btn;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.pagination-dots {
+    border: none;
+    background: none;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
+
+    &:hover {
+      background: none;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    text-decoration: underline;
+  }
+}
+
+.pagination-btn {
+  @extend .btn;
+  background-color: white;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @include mobile {
+    width: 100%;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+</style>

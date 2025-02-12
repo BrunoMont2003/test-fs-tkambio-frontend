@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAuth } from '../composables/useAuth';
 import ReportModal from '../components/ReportModal.vue';
 import ReportsTable from '../components/ReportsTable.vue';
+import Header from '../components/Header.vue';
 import { useReports } from '../composables/useReports';
 
-const route = useRoute();
+import { useAuth } from '../composables/useAuth';
 const { logout } = useAuth();
+const route = useRoute();
 const showModal = ref(false);
-const { 
-  reports, 
-  isLoading, 
-  error, 
-  metadata, 
-  fetchReports, 
-  changePage, 
-  downloadReport 
+const {
+  reports,
+  isLoading,
+  error,
+  metadata,
+  fetchReports,
+  changePage,
+  downloadReport
 } = useReports();
 
 onMounted(() => {
@@ -35,38 +36,71 @@ const handleReportGenerated = () => {
 
 <template>
   <div class="app">
-    <header class="header">
-      <h1>tkambio</h1>
-      <button class="btn btn-secondary" @click="logout">
-        Cerrar sesión
-      </button>
-    </header>
-
+    <Header></Header>
     <main class="container">
       <div class="reports-header">
         <h2>Generador de reportes TK</h2>
-        <button class="btn btn-primary" @click="showModal = true">
-          Crear reporte
-        </button>
       </div>
 
       <div v-if="error" class="error-message">
         {{ error }}
       </div>
 
-      <ReportsTable
-        :reports="reports"
-        :isLoading="isLoading"
-        :metadata="metadata"
-        @download="downloadReport"
-        @page-change="handlePageChange"
-      />
+      <ReportsTable :reports="reports" :isLoading="isLoading" :metadata="metadata" @download="downloadReport"
+        @page-change="handlePageChange" />
 
-      <ReportModal 
-        v-if="showModal"
-        @close="showModal = false"
-        @report-generated="handleReportGenerated"
-      />
+      <ReportModal v-if="showModal" @close="showModal = false" @report-generated="handleReportGenerated" />
+
+      <div class="reports-view-actions">
+        <button class="btn-create-report" @click="showModal = true">
+          Crear reporte
+        </button>
+        <button class="btn-logout" @click="logout">
+          Cerrar sesión
+        </button>
+      </div>
     </main>
   </div>
 </template>
+<style lang="scss" scoped>
+@import '../assets/styles/main.scss';
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.reports-header {
+  @include flex-center();
+
+  h2 {
+    font-weight: normal;
+    margin-bottom: 2rem;
+  }
+}
+
+.reports-view-actions {
+  margin-top: 2rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .btn-create-report {
+    @extend .btn;
+    @extend .btn-secondary;
+  }
+
+  .btn-logout {
+    @extend .btn;
+    @extend .btn-ghost;
+    color: $error-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+</style>
