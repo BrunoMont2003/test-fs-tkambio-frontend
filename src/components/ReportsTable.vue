@@ -14,7 +14,6 @@ defineEmits<{
   (e: 'page-change', page: number | string): void;
 }>();
 </script>
-
 <template>
   <div class="reports-table-container">
     <div v-if="isLoading" class="loading">
@@ -59,7 +58,7 @@ defineEmits<{
   overflow-x: auto;
   background-color: $primary-color;
   margin: 0 auto;
-  width: 690px;
+  max-width: 750px;
   height: 412px;
   gap: 10px;
   border-radius: 10px;
@@ -83,7 +82,6 @@ defineEmits<{
     border: 0;
     padding: 1rem 0rem;
     text-align: left;
-
   }
 
   & th {
@@ -103,7 +101,7 @@ defineEmits<{
   }
 
   & table {
-    width: 100%;
+    min-width: 690px;
     background-color: $primary-color;
 
     & tr {
@@ -175,7 +173,14 @@ defineEmits<{
 
     color: white;
     font-weight: bold !important;
-
   }
+
+  @include mobile {
+
+    & table {
+      min-width: 500px;
+    }
+  }
+
 }
 </style>
