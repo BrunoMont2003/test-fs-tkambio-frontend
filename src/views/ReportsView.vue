@@ -30,6 +30,7 @@ const handlePageChange = (page: number | string) => {
 
 const handleReportGenerated = () => {
   showModal.value = false;
+  fetchReports(1);
   changePage(1);
 };
 </script>
